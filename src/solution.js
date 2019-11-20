@@ -63,14 +63,22 @@ function findResults(wordString, fileNameArray) {
 
 function searchDictionary(wordString) {
   const word = processString(wordString);
-  const filteredWordsByInputString = Object.keys(myDictionary).filter(element => element.includes(word))
-  const wordAndValueObject = filteredWordsByInputString.map((element) => {
-    return { [`${element}`]: myDictionary[element] }
+  const wordAndValueObject = Object.entries(myDictionary).map((element) => {
+    const currentWord = element[0];
+    const currentWordCount = element[1].value;
+    if (currentWord.includes(word)) {
+      return { [currentWord]: currentWordCount } 
+    }
   });
 
   const topTwentyFive = sortWordsByTopTwentyFive(wordAndValueObject);
-
   console.log('autocomplete results', topTwentyFive);
+  topTwentyFive.forEach(result => {
+    const word = Object.keys(result)
+    const wordCount = result[word];
+    process.stdout.write('\n')
+    process.stdout.write(`${word}: ${wordCount}`)
+  })
   return topTwentyFive;
 }
 
