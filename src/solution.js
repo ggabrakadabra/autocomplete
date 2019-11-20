@@ -1,6 +1,6 @@
 const fs = require('fs');
 const readline = require('readline');
-const { processString } = require('./utils/processString');
+const { processString, checkForValidInputString } = require('./utils/processString');
 const { getProcessArguments } = require('./utils/getProcessArguments');
 const { sortWordsByTopTwentyFive } = require('./utils/sortWordsByTopTwentyFive');
 const { verifyFilesExist } = require('./utils/verifyFilesExist');
@@ -35,8 +35,6 @@ function findResults(wordString, fileNameArray) {
       console.log('issue importing text files, check import path')
     }
   }
-  
-  processFiles(fileNameArray);
 
   let processed = 0;
 
@@ -59,6 +57,8 @@ function findResults(wordString, fileNameArray) {
       }
     });
   }
+
+  processFiles(fileNameArray);
 }
 
 function searchDictionary(wordString) {
@@ -72,20 +72,24 @@ function searchDictionary(wordString) {
   });
 
   const topTwentyFive = sortWordsByTopTwentyFive(wordAndValueObject);
-  console.log('autocomplete results', topTwentyFive);
+  console.log('autocomplete results:');
+  process.stdout.write('\n')
   topTwentyFive.forEach(result => {
     const word = Object.keys(result)
     const wordCount = result[word];
-    process.stdout.write('\n')
     process.stdout.write(`${word}: ${wordCount}`)
+    process.stdout.write('\n')
   })
+  process.stdout.write('\n')
   return topTwentyFive;
 }
 
 
 function playFunction() {
   const { wordString, fileNameArray } = getProcessArguments();
-  if (wordString && fileNameArray) {
+  const validString = checkForValidInputString(wordString);
+  const validInputs = (wordString && fileNameArray) && validString;
+  if (validInputs) {
     findResults(wordString, fileNameArray);
   } else {
     console.log('use valid string and/or file name array for inputs')
