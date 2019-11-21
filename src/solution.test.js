@@ -1,70 +1,31 @@
-const { 
-	findResults,
-	searchDictionary,
-	playFunction,
-} = require('./solution.js');
-const { createDictionary, myDictionary } = require('./utils/createDictionary');
+const { playFunction } = require('./solution.js');
+const { findResults } = require('./utils/findResults.js');
 const readline = require('readline');
 
 console.log = jest.fn();
 
 describe('solution', () => {
-	describe('findResults', () => {
-		it('will create interface', () => {
-			const createInterfaceSpy = jest.spyOn(readline, 'createInterface');
-			findResults('foo', ['src/text/shakespeare-complete.txt']);
-			expect(createInterfaceSpy).toHaveBeenCalled();
-		})
-
-		it('for invalid file path input', () => {
-			process.argv = [
-				'node/path',
-				'file/path',
-				'querystring',
-				'foo.txt'
-			];
-			findResults('querystring', ['foo.txt']);
-
-			expect(console.log.mock.calls).toEqual([
-				['Issue importing text files or with input string.'],
-				['Please try again.']
-			]);
-		});
-	});
-
-	describe('searchDictionary', () => {
-		it('will return results for search query', () => {
-			const arrayOfWordsInLine = [
-				'afoo', 'afoo', 'afoo', 'afoo', 'afoo', 'aaaa', 'aaaa', 'happy', 'happy', 'happy',
-			];
-			const expected = [
-				{'afoo': 5},
-				{'happy': 3},
-				{'aaaa': 2},
-			];
-			createDictionary(arrayOfWordsInLine);
-			expect(searchDictionary('a')).toEqual(expected);
-		});
-	});
-
 	describe('playFunction', () => {
+		beforeEach(() => {
+			jest.clearAllMocks();
+		});
 
-		it('will write to console', () => {
+		it('will call find results function', () => {
+			const createInterfaceSpy = jest.spyOn(readline, 'createInterface');
 			process.argv = [
 				'node/path',
 				'file/path',
-				'ala',
+				'hello',
 				'src/text/shakespeare-complete.txt'
 			];
 
-			// process.stdout.write = jest.fn();
-
 			playFunction();
 
-			expect(console.log.mock.calls).toEqual()
+			findResults('foo', ['src/text/shakespeare-complete.txt']);
+			expect(createInterfaceSpy).toHaveBeenCalled();
 		});
 
-		it('for invalid query string input', () => {
+		it('will print to console for invalid query string input', () => {
 			process.argv = [
 				'node/path',
 				'file/path',
@@ -74,11 +35,8 @@ describe('solution', () => {
 
 			playFunction();
 
-			// test this way because of issue with single/double quotes
 			expect(console.log.mock.calls).toEqual([
-				["Issue importing text files or with input string."], 
-				["Please try again."], 
-				["Please use valid string and/or file name array for inputs."]
+				['Please use valid string and/or file name array for inputs.']
 			]);
 
 		});
