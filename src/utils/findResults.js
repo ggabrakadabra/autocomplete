@@ -18,12 +18,14 @@ function findResults(wordString, fileNameArray) {
       crlfDelay: Infinity
     });
 
+    /* istanbul ignore next */
     rl.on('line', (line) => {
       const arrayOfWordsInLine = processString(line);
 
       createDictionary(arrayOfWordsInLine);
     });
-
+    
+    /* istanbul ignore next */
     return rl.once('close', () => {
       processed++
       if (processed === fileNameArray.length) {
