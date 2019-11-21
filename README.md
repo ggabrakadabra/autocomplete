@@ -1,5 +1,5 @@
 # Autocomplete
-A node cli autocomplete program that will return the top 25 words from a given file.
+Goal: Create a program that can autocomplete word fragments using one or more text files as the data source.
 
 ## How to Use
 clone project and run `npm install`
@@ -8,6 +8,8 @@ run `npm run autocomplete` followed by query string and source text files
 
 example:
 `npm run autocomplete queryString source-text1.txt source-text2.txt....`
+
+For the case of contractions, will need to either wrap contraction in double quotes or escape the apostrophe.
 
 ## How it works 
   * When calling the file with the `npm run autocomplete query filename`, the function will verify that the first argument is a string and that the following arguments are valid text files. 
@@ -44,3 +46,5 @@ The program should be able to handle large files and remain performant in both t
 Imagine now that your program was going to be used in a web context. Would your program need to change? If so, how? What would you do to ensure the program can handle a high frequency of autocomplete searches and remain performant. Would you need to change your implementation as frequency increased from 1 search/second to 1000 searches/second? 100000 searches/second?
 * To handle a high load of search quests and also storage for a growing dictionary, there would need to be many servers. 
 
+Imagine now that your program was going to be used in a web context. Would your program need to change? If so, how? What would you do to ensure the program can handle a high frequency of autocomplete searches and remain performant. Would you need to change your implementation as frequency increased from 1 search/second to 1000 searches/second? 100000 searches/second?
+* 
