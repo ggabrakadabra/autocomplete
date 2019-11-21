@@ -5,36 +5,30 @@ const { createDictionary } = require('./createDictionary');
 const { searchDictionary } = require('./searchDictionary');
 
 function findResults(wordString, fileNameArray) {
-
-  fileNameArray.forEach(file => {
-    processLineByLine(file);
-  });
-
-  let processed = 0;
-
-  function processLineByLine(filename) {
+  const numberOfFiles = fileNameArray.length;
+  fileNameArray.forEach(fileName => {
     const rl = readline.createInterface({
-      input: fs.createReadStream(filename, { encoding: 'utf-8' }),
+      input: fs.createReadStream(fileName, { encoding: 'utf-8' }),
       crlfDelay: Infinity
     });
-
-    /* istanbul ignore next */
+  
+    let processed = 0;
+  
     rl.on('line', (line) => {
       const arrayOfWordsInLine = processString(line);
-
+  
       createDictionary(arrayOfWordsInLine);
     });
-    
-    /* istanbul ignore next */
-    return rl.once('close', () => {
-      processed++
-      if (processed === fileNameArray.length) {
+  
+    rl.once('close', () => {
+      processed++;
+      if (processed === numberOfFiles) {
         searchDictionary(wordString);
       }
     });
-  }
+  });
 }
 
 module.exports = {
   findResults
-}
+};

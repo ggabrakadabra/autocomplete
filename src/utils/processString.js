@@ -1,9 +1,9 @@
 function processString(wordString) {
-  return wordString.toLowerCase().replace(/[^a-zA-Z'-]/g, ' ').split(' ');
+  return wordString.toLowerCase().replace(/[^a-z'-]/g, ' ').split(' ');
 }
 
 function checkForValidInputString(wordString) {
-  const validRegex = /^[a-zA-Z(')!@#\$%\^\&*\)\(+=._-]{1,}$/g
+  const validRegex = /^[a-z(')!@#\$%\^\&*\)\(+=._-]{1,}$/g
   const validString = validRegex.test(wordString)
   return validString;
 }

@@ -13,19 +13,21 @@ function searchDictionary(wordString) {
   });
 
   const topTwentyFive = sortWordsByTopTwentyFive(wordAndValueArray);
-  
-  console.log('autocomplete results:');
-  process.stdout.write('\n')
-  topTwentyFive.forEach(result => {
-    if (result) {
-      const word = Object.keys(result)
+
+  if(topTwentyFive.length > 0) {
+    console.log('autocomplete results:');
+    process.stdout.write('\n');
+    topTwentyFive.forEach(result => {
+      const word = Object.keys(result);
       const wordCount = result[word];
-      console.log(`${word}: ${wordCount}`)
-    }
-  });
-  return topTwentyFive;
+      console.log(`${word}: ${wordCount}`);
+    });
+    return topTwentyFive;
+  } else {
+    console.log('no results');
+  }
 }
 
 module.exports = {
   searchDictionary
-}
+};

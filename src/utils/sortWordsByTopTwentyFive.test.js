@@ -31,7 +31,7 @@ describe('sortWordsByTopTwentyFive', () => {
       {'chair': 222},
       {'lala': 562},
       {'looooa': 82},
-    ]
+    ];
 
     const expected = [
       {'usa': 1122}, 

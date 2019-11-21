@@ -6,9 +6,10 @@ function sortWordsByTopTwentyFive(wordAndValueArray) {
 	  if (b[wordB] < a[wordA] ) return -1
 	  return 0
 	}
-    return wordAndValueArray.sort(sortResults).slice(0, 25);
-  }
+	const topTwentyFive = wordAndValueArray.sort(sortResults).filter(word => word !== undefined).slice(0, 25);
+	return topTwentyFive;
+}
 
 module.exports = {
   sortWordsByTopTwentyFive
-}
+};

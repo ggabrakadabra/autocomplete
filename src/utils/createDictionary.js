@@ -15,4 +15,4 @@ function createDictionary(arrayOfWordsInLine) {
 module.exports = {
   createDictionary,
   myDictionary
-}
+};

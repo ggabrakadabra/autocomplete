@@ -38,7 +38,21 @@ describe('solution', () => {
 			expect(console.log.mock.calls).toEqual([
 				['Please use valid string and/or file name array for inputs.']
 			]);
+		});
 
+		it('will print to console for invalid query string input', () => {
+			process.argv = [
+				'node/path',
+				'file/path',
+				'gooo',
+				'merp.foo'
+			];
+
+			playFunction();
+
+			expect(console.log.mock.calls).toEqual([
+				['Please use valid string and/or file name array for inputs.']
+			]);
 		});
 	});
 });

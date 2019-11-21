@@ -3,6 +3,17 @@ const { createDictionary } = require('./createDictionary');
 
 console.log = jest.fn();
 describe('searchDictionary', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('will console log if no results', () => {
+    searchDictionary('foo')
+    expect(console.log.mock.calls).toEqual([
+      ['no results']
+    ]);
+  });
+
   it('will return results for search query', () => {
     const arrayOfWordsInLine = [
       'afoo', 'afoo', 'afoo', 'afoo', 
@@ -13,8 +24,6 @@ describe('searchDictionary', () => {
       {'afoo': 5},
       {'happy': 3},
       {'aaaa': 2},
-      undefined,
-      undefined
     ];
 
     createDictionary(arrayOfWordsInLine);
@@ -24,6 +33,6 @@ describe('searchDictionary', () => {
       ['afoo: 5'], 
       ['happy: 3'], 
       ['aaaa: 2']
-    ])
+    ]);
   });
 });
