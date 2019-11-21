@@ -3,36 +3,22 @@ const readline = require('readline');
 const { processString, checkForValidInputString } = require('./utils/processString');
 const { getProcessArguments } = require('./utils/getProcessArguments');
 const { sortWordsByTopTwentyFive } = require('./utils/sortWordsByTopTwentyFive');
-const { verifyFilesExist } = require('./utils/verifyFilesExist');
+const { validateTextFiles } = require('./utils/validateTextFiles');
+const { createDictionary, myDictionary } = require('./utils/createDictionary');
 
-let myDictionary = {};
-
-function createDictionary(arrayOfWordsInLine) {
-  arrayOfWordsInLine.forEach(word => {
-    if (word.length > 0) {
-      if (myDictionary[word]) {
-        myDictionary[word] = {
-          value: myDictionary[word].value + 1
-        };
-      } else {
-        myDictionary[word] = {
-          value: 1
-        };
-      }
-    }
-  });
-}
+const testEnvironment = process.env.NODE_ENV === 'test'
 
 function findResults(wordString, fileNameArray) {
 
   function processFiles(fileNameArray) {
-    const filesExist = verifyFilesExist(fileNameArray)
+    const filesExist = validateTextFiles(fileNameArray)
     if (filesExist) {
       fileNameArray.forEach(file => {
         processLineByLine(file);
       });
     } else {
-      console.log('issue importing text files, check import path')
+      console.log('Issue importing text files or with input string.')
+      console.log('Please try again.')
     }
   }
 
@@ -63,27 +49,29 @@ function findResults(wordString, fileNameArray) {
 
 function searchDictionary(wordString) {
   const word = processString(wordString);
-  const wordAndValueObject = Object.entries(myDictionary).map((element) => {
+
+  const wordAndValueArray = Object.entries(myDictionary).map((element) => {
     const currentWord = element[0];
-    const currentWordCount = element[1].value;
+    const currentWordCount = element[1];
     if (currentWord.includes(word)) {
       return { [currentWord]: currentWordCount } 
     }
   });
 
-  const topTwentyFive = sortWordsByTopTwentyFive(wordAndValueObject);
-  console.log('autocomplete results:');
-  process.stdout.write('\n')
-  topTwentyFive.forEach(result => {
-    const word = Object.keys(result)
-    const wordCount = result[word];
-    process.stdout.write(`${word}: ${wordCount}`)
+  const topTwentyFive = sortWordsByTopTwentyFive(wordAndValueArray);
+
+  if (!testEnvironment) {
+    console.log('autocomplete results:');
     process.stdout.write('\n')
-  })
-  process.stdout.write('\n')
+    topTwentyFive.forEach(result => {
+      const word = Object.keys(result)
+      const wordCount = result[word];
+      console.log(`${word}: ${wordCount}`)
+    })
+  }
+
   return topTwentyFive;
 }
-
 
 function playFunction() {
   const { wordString, fileNameArray } = getProcessArguments();
@@ -92,11 +80,19 @@ function playFunction() {
   if (validInputs) {
     findResults(wordString, fileNameArray);
   } else {
-    console.log('use valid string and/or file name array for inputs')
+    console.log('Please use valid string and/or file name array for inputs.')
   }
 }
 
-playFunction();
+ /* istanbul ignore next */
+if (!testEnvironment) {
+  playFunction();
+}
 
-
-
+module.exports = {
+  playFunction,
+  createDictionary,
+  searchDictionary,
+  findResults,
+  myDictionary
+}
