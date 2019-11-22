@@ -1,3 +1,0 @@
-* Unicode data and queries should be fully supported (e.g. `ünch` might return `München`, and `ÁRE` might return `JUÁREZ`)
-* The program should be able to handle large files and remain performant in both time and space complexity. What would you need to do to make this program able to search against thousands of files the size of Shakespeare's complete works?
-* [Write up] Imagine now that your program was going to be used in a web context. Would your program need to change? If so, how? What would you do to ensure the program can handle a high frequency of autocomplete searches and remain performant. Would you need to change your implementation as frequency increased from 1 search/second to 1000 searches/second? 100000 searches/second?

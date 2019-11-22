@@ -3,18 +3,21 @@ const { myDictionary } = require('./createDictionary');
 const { sortWordsByTopTwentyFive } = require('./sortWordsByTopTwentyFive');
 
 function searchDictionary(wordString) {
-  const word = processString(wordString);
+  const searchQuery = processString(wordString);
+
   const wordAndValueArray = Object.entries(myDictionary).map((element) => {
     const currentWord = element[0];
     const currentWordCount = element[1];
-    if (currentWord.includes(word)) {
+    if (currentWord.includes(searchQuery)) {
       return { [currentWord]: currentWordCount } 
     }
   });
 
   const topTwentyFive = sortWordsByTopTwentyFive(wordAndValueArray);
-
-  if(topTwentyFive.length > 0) {
+  const hasResults = topTwentyFive.length > 0;
+  
+  if(hasResults) {
+    console.timeEnd('p');
     console.log('autocomplete results:');
     process.stdout.write('\n');
     topTwentyFive.forEach(result => {

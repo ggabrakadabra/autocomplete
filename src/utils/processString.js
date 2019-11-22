@@ -1,14 +1,7 @@
 function processString(wordString) {
-  return wordString.toLowerCase().replace(/[^a-z'-]/g, ' ').split(' ');
-}
-
-function checkForValidInputString(wordString) {
-  const validRegex = /^[a-z(')!@#\$%\^\&*\)\(+=._-]{1,}$/g
-  const validString = validRegex.test(wordString)
-  return validString;
+  return wordString.toLowerCase().replace(/[^\p{L}'-]+/gu, ' ').split(' ');
 }
 
 module.exports = {
-  processString,
-  checkForValidInputString
+  processString
 };

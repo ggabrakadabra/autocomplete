@@ -6,27 +6,32 @@ const { searchDictionary } = require('./searchDictionary');
 
 function findResults(wordString, fileNameArray) {
   const numberOfFiles = fileNameArray.length;
-  fileNameArray.forEach(fileName => {
+  
+  fileNameArray.forEach(file => {
+    processLineByLine(file);
+  });
+
+  let processed = 0;
+
+  function processLineByLine(fileName) {
     const rl = readline.createInterface({
       input: fs.createReadStream(fileName, { encoding: 'utf-8' }),
       crlfDelay: Infinity
     });
-  
-    let processed = 0;
-  
+
     rl.on('line', (line) => {
       const arrayOfWordsInLine = processString(line);
-  
       createDictionary(arrayOfWordsInLine);
     });
-  
+    
     rl.once('close', () => {
       processed++;
-      if (processed === numberOfFiles) {
+      const allFilesProcessed = processed === numberOfFiles;
+      if (allFilesProcessed) {
         searchDictionary(wordString);
       }
     });
-  });
+  }
 }
 
 module.exports = {

@@ -1,4 +1,3 @@
-const { checkForValidInputString } = require('./utils/processString');
 const { getProcessArguments } = require('./utils/getProcessArguments');
 const { validateTextFiles } = require('./utils/validateTextFiles');
 const { createDictionary, myDictionary } = require('./utils/createDictionary');
@@ -6,15 +5,16 @@ const { searchDictionary } = require('./utils/searchDictionary');
 const { findResults } = require('./utils/findResults');
 
 function playFunction() {
+  console.time('p');
   const { wordString, fileNameArray } = getProcessArguments();
-  const validString = checkForValidInputString(wordString);
   const filesExist = validateTextFiles(fileNameArray)
-  const validInputs = (wordString && fileNameArray) && validString && filesExist;
+  const validInputs = (wordString && fileNameArray) && filesExist;
 
   if (validInputs) {
     findResults(wordString, fileNameArray);
   } else {
-    console.log('Please use valid string and/or file name array for inputs.')
+    console.timeEnd('p');
+    console.log('Please use valid string and/or file name array for inputs.');
   }
 }
 
